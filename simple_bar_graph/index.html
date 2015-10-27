@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>D3 Test</title>
+		<script src="../js/d3.min.js"></script>
+		<style type="text/css">
+			div {
+				display: inline-block;
+				width: 20px;
+				margin-right: 2px;
+			}
+		</style>
+	</head>
+	<body>
+		<p>
+			<label for='curArrSize'>Size of array:</label>
+			<input type='text' value='10' id='curArrSize' onkeypress = 'return inputValue(event)'>
+			<input type='button' value = 'Refresh' onclick = 'changeArr()'>
+		</p>
+		<script>
+			var dataset = getRandomArray(getSizeArray());
+		
+			function getRandomArray(parLength) {
+				var arr = [];
+				for (var i = 0; i < parLength; i++) {
+					arr.push(Math.floor(Math.random()*25 + 2));
+				}
+				return arr;
+			}
+			
+			function getSizeArray() {
+				var elem = document.getElementById('curArrSize');
+				elem.addEventListener('keypress',inputValue);
+				return +elem.value;
+			}
+			
+			function inputValue() {
+				if (event.keyCode<48 || event.keyCode>57) {
+					return false;
+				}
+			}
+			
+			function changeArr() {
+				dataset = getRandomArray(getSizeArray());
+				d3.select("body").selectAll("div").remove();	
+				init();
+			}
+			
+			function init() {
+				d3.select("body").selectAll("div")
+								 .data(dataset)
+								 .enter()
+								 .append("div")
+								 .style('background-color', function(d){
+														      var color = 'rgb(' + (50 + d * 10) + ',0,0)';	
+														      return color;
+													        })
+							     .style("height", function(d) {
+												    var barHeight = d * 10;
+												    return barHeight + "px";
+											      })		
+			}
+
+			init();	
+		</script>
+	</body>
+</html>
