@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<script src="../js/d3.min.js"></script>
+		<style type="text/css">
+			div {
+				height: 20px;
+				margin:5px;
+			}
+			.bar:hover {
+				border:1px solid green;
+				height: 22px;
+				font-size:110%;
+				color:white !important;
+				cursor:pointer;
+				background:red !important;
+			}
+			.bar {
+				text-align:center;
+				color : navy;
+				font-weight:bold;	
+			}
+			label, input[type='button'] {
+				display:block;
+				margin:5px 0 0 0; 
+			}
+			.addNumber {
+				font-size:140%;
+			}
+		</style>
+	</head>
+	<body>
+		<p>
+			<label for='size'>Add value to array:</label>
+			<input type="range" min="0" max="10" id="size"  value="0" onchange = 'return changeRange()'>
+			<span class='addNumber'><sup>1</sup></span>
+			<label for='curArrSize'>Size of array:</label>
+			<input type='text' value='10' id='curArrSize' onkeypress = 'return inputValue(event)'>
+			<input type='button' value = 'Refresh' onclick = 'changeArr()'>
+		</p>
+		<hr>
+		<script>
+			var dataset = getRandomArray(getSizeArray());
+			var addVal = d3.selectAll('#size');
+			
+			function getRandomArray(parLength) {
+				var arr = [];
+				var addV = d3.select('#size');
+				for (var i = 0; i < parLength; i++) {
+					arr.push(Math.floor(Math.random()*25 + 2) + parseInt(addV[0][0].value));
+				}
+				return arr;
+			}
+			
+			function getSizeArray() {
+				var elem = document.getElementById('curArrSize');
+				elem.addEventListener('keypress',inputValue);
+				return +elem.value;
+			}
+			
+			function inputValue() {
+				if (event.keyCode<48 || event.keyCode>57) {
+					return false;
+				}
+			}
+
+			function changeArr() {
+				dataset = getRandomArray(getSizeArray());
+				d3.select("body").selectAll("div").remove();	
+				init();
+			}
+			function changeRange() {
+				var addV = d3.select('#size');
+				d3.selectAll('.addNumber').html('<sup>'+parseInt(addV[0][0].value) + '</sup>');
+				changeArr();
+			}
+			function init() {
+				d3.select("body").selectAll("div")
+								 .data(dataset)
+								 .enter()
+								 .append("div")
+								 .attr("class","bar")
+								 .style("background-color", function(d){
+														      var color = 'rgb(0,' + (255 -  d * 6) + ',0)';	
+														      return color;
+													        })
+							     .style("width", function(d) {
+												    var barWidth = d * 10;
+												    return barWidth + "px";
+											      })
+								 .text(function (d) {return ">" + d })	
+								 
+			}
+
+			init();	
+		</script>
+	</body>
+</html>
