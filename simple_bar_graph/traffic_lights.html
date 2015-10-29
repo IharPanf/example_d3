@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="http://d3js.org/d3.v3.min.js"> </script>
+<style>
+svg circle{
+    stroke: steelblue;
+    stroke-width: 2;
+	cursor:pointer;
+}
+.no_active{
+	fill:grey;
+}
+</style>
+<body>
+<div class="manage">
+	<input type="button" value="start" id="btn">
+	<input type="checkbox" id="check"><i>All at once</i>
+	<br>	
+	<span class="outputTime">Press button "Start"</span>
+</div>
+<div class="wrap_image">
+ <svg></svg>
+</div> 
+<script>
+var width = 300,
+    height = 300;
+         
+var svg = d3.select("body").select(".wrap_image").select("svg");
+     
+svg.attr("height", height)
+    .attr("width", width);    
+
+svg.append("rect")
+	.style("fill", "black")
+	.attr("x", 20)
+	.attr("y", 20)
+	.attr("width", 100) 
+	.attr("height", 200)
+	.attr("rx", 15)
+	
+svg.append("circle")
+	.attr("data-color","red")
+	.attr("class","no_active")	
+	.attr("cx", 70)
+	.attr("cy", 60)
+	.attr("r", 25);
+	
+svg.append("circle") 
+	.attr("class","no_active")
+	.attr("data-color","yellow")
+	.attr("cx", 70)
+	.attr("cy", 120)
+	.attr("r", 25);	
+
+svg.append("circle") 
+	.attr("class","no_active")
+	.attr("data-color","green")
+	.attr("cx", 70)
+	.attr("cy", 180)
+	.attr("r", 25);	
+	
+	d3.select("#btn").on('click',clickBtn);
+	d3.selectAll("circle").on('click',clickCircle)
+	var intervalID;
+	var i = 0;
+	function clickCircle() {
+		this.style.fill =  'grey';
+	}
+	function clickBtn() {
+	  var elemCheck = document.getElementById('check');	
+	  if (!elemCheck.checked) {
+		clearInterval(intervalID);
+	  }		
+	  intervalID = setInterval('returnColor(' + i + ')',1000);  
+	  countColor();
+	  if (i < 2) { i++ } else { i = 0};
+	}
+	
+	function returnColor(i) {
+		var arrElem = document.getElementsByTagName('circle');
+		var colorElem = arrElem[i].getAttribute('data-color');
+		if (arrElem[i].style.fill != colorElem) {
+			arrElem[i].style.fill =  colorElem;
+		} else {
+			arrElem[i].style.fill =  'grey';
+		}	
+	}
+	function countColor(){
+		d3.select('.outputTime').text('Select color:'+ (i+1));
+	}
+</script>
+</body>
+</html>
