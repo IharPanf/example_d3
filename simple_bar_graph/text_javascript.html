@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<script src="../js/d3.min.js"></script>
+		<style>
+			text {
+				font-size:200%;
+
+			}
+			tspan:hover {
+				fill: yellow;
+				cursor:pointer;
+			}
+			div {
+				margin: 20px 0 0 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div>
+		<svg height="500" width="500">
+			<text x="0" y="50" >
+				    <tspan x="0" y="50" fill="#FF0000">J</tspan>
+					<tspan x="20" y="50" fill="green">A</tspan>
+					<tspan x="50" y="50" fill="#0000FF">V</tspan>
+					<tspan x="80" y="50" fill="#FF0000">A</tspan>
+					<tspan x="110" y="50" fill="green">S</tspan>
+					<tspan x="140" y="50" fill="#0000FF">C</tspan>
+					<tspan x="170" y="50" fill="#FF0000">R</tspan>
+					<tspan x="200" y="50" fill="green">I</tspan>
+					<tspan x="220" y="50" fill="#0000FF">P</tspan>
+					<tspan x="250" y="50" fill="#FF0000">T</tspan>
+			</text>
+		</svg>
+		</div>
+		<script>
+			var p_grad = 0;
+			var p_left = -30;
+			var intervalID;
+			
+			function rotateText() {
+				d3.select("text").attr('transform','rotate('+p_grad+' '+ p_left +',40)');
+				if ( p_grad < 360) {
+						p_grad++;
+						p_left++;
+				} else {
+					p_grad = 0;
+					p_left = -30;	
+				}	
+			}
+			function clickLetter(e) {
+				d3.select(this).remove();	
+			}
+			
+			function startRotate() {
+				if (intervalID == undefined) { 
+					intervalID = setInterval(rotateText,10);
+				} else {
+					clearInterval(intervalID);
+					intervalID = undefined;
+				}
+			}
+
+			
+			d3.selectAll("tspan").on('click',clickLetter);
+			d3.select('body').on('dblclick',startRotate);
+		</script>
+	</body>
+</html>
