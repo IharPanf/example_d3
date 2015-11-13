@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>SVG Example</title>
+	<style>
+		circle:hover, rect:hover {
+			fill:yellow;
+			cursor:pointer;
+			stroke:navy;
+		}
+	</style>
+  </head>
+  <body>
+	<h1>Какая фигура лишняя?</h1>
+    <svg width="600" height="250">
+	  <rect x="10" y="50" fill="red" width="100" height="100" stroke="black" stroke-width="10"></rect>	
+	  <rect x="130" y="50" fill="red" width="100" height="100"></rect>	
+      <circle cx="300" cy="100" r="50" fill="red" stroke="black" stroke-width="10"></circle>
+	  <rect x="380" y="50" fill="#00FF21" width="100" height="100" stroke="black" stroke-width="10"></rect>	
+	  <rect x="510" y="75" fill="red" width="50" height="50" stroke="black" stroke-width="10"></rect>	
+    </svg>
+    <script src="js/d3.min.js"></script>
+	<script>
+		d3.selectAll('circle, rect').on('click',function(){
+			var curValue = d3.select(this).attr('x') + d3.select(this).attr('y');
+			if (parseInt(curValue).toString(2) == '10000011010') {
+				alert('Верно!');
+			}else{
+				alert('Не правильно!');
+			}
+		})
+	</script>
+  </body>
+</html>
