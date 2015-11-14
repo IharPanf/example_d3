@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="../js/d3.min.js"></script>
+  </head>
+  <body>
+	<div>
+		<ul>
+		</ul>
+	<div>
+    <script>
+		d3.csv("month.csv", function (arrObj){
+				arrObj.forEach(function (d){
+						d3.select('ul')
+							.append('li')
+							.text(d.month)
+							.append('span')
+							.text(' ('+d.day+')');
+						});
+				});
+						
+    </script>
+
+  </body>
+</html>
