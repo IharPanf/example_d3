@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<script src="../../js/d3.min.js"></script>
+	</head>
+	<body>
+		<div>
+			<label for="cRed">red</label>
+			<input type="number" id="cRed" value="30" min=1>
+			<label for="cGreen">green</label>
+			<input type="number" id="cGreen" value="30" min=1>
+			<label for="cBlue">blue</label>
+			<input type="number" id="cBlue" value="30" min=1>
+			<input type="button" value="Обновить">
+		</div>
+		<svg></svg>
+		<script>
+			var COLOR1 = "#D62728",
+				COLOR2 = "#2CA02C",
+				COLOR3 = "#1F77B4";
+				
+			var cScale = d3.scale
+						   .linear()
+						   .domain([0, 100])
+						   .range([0, 2 * Math.PI]);
+						   
+			changeData();
+		
+			var arrElemInput = document.querySelectorAll("input[type='number']");
+			
+			for (var i = 0; i < arrElemInput.length; i++) {
+				arrElemInput[i].addEventListener('change',changeData);
+			}
+			
+			function changeData() {
+			
+				d3.select("svg").selectAll("path").remove();	
+				
+				var elemRed   = parseInt(d3.select("#cRed").property("value"));
+				var elemGreen = parseInt(d3.select("#cGreen").property("value"));				 
+				var elemBlue  = parseInt(d3.select("#cBlue").property("value"));
+			
+				el1  = Math.round(elemRed * 100  / (elemRed + elemGreen + elemBlue),2);
+				el2  = Math.round(elemGreen * 100 /(elemRed + elemGreen + elemBlue),2);
+				el3  = Math.ceil(elemBlue * 100 / (elemRed + elemGreen + elemBlue),2);
+				
+				data =  [
+							[0,el1,COLOR1],
+							[el1,el2+el1,COLOR2],
+							[el2+el1,el2+el1+el3,COLOR3]
+						]
+						
+				var arc = d3.svg.arc()
+							.innerRadius(5)
+							.outerRadius(100)
+							.startAngle(function(d){return cScale(d[0]);})
+							.endAngle(function(d){return cScale(d[1]);});		
+				
+				d3.select("svg")
+						.selectAll("path")
+						.data(data)
+						.enter()
+						.append("path")
+						.attr("d", arc)
+						.style("fill", function(d){return d[2];}) 
+						.attr("transform", "translate(300,200)")
+										
+				return true;		
+			}	
+		</script>
+	</body>
+</html>

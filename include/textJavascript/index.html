@@ -2,11 +2,10 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<script src="../js/d3.min.js"></script>
+		<script src="../../js/d3.min.js"></script>
 		<style>
 			text {
 				font-size:200%;
-
 			}
 			tspan:hover {
 				fill: yellow;
@@ -61,7 +60,6 @@
 					intervalID = undefined;
 				}
 			}
-
 			
 			d3.selectAll("tspan").on('click',clickLetter);
 			d3.select('body').on('dblclick',startRotate);
